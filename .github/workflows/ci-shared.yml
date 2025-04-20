@@ -31,7 +31,7 @@ jobs:
           workload_identity_id_suffix=${{ vars.GCP_WORKLOAD_IDENTITY_ID_SUFFIX }}
           pool=workloadIdentityPools/gha-pool-${workload_identity_id_suffix}
           provider=providers/gha-prov-${workload_identity_id_suffix}
-          echo "WORKLOAD_IDENTITY_PROVIDER=projects/${{ vars.GCP_PROJECT_NO }}/locations/global/${pool}/${provider}" >> $GITHUB_OUTPUT
+          echo "WORKLOAD_IDENTITY_PROVIDER=//iam.googleapis.com/projects/${{ vars.GCP_PROJECT_NO }}/locations/global/${pool}/${provider}" >> $GITHUB_OUTPUT
 
           repo_domain=${{ env.region }}-docker.pkg.dev
           echo "REPO_DOMAIN=${repo_domain}" >> $GITHUB_OUTPUT
