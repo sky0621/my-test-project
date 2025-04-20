@@ -25,16 +25,21 @@ jobs:
         name: "Set variables"
         run: |
           prj_id=${{ vars.GCP_PROJECT_ID }}
+          echo "PROJECT_ID=${prj_id}"
           echo "PROJECT_ID=${prj_id}" >> $GITHUB_OUTPUT
+          echo "SERVICE_ACCOUNT=github-actions-sa@${prj_id}.iam.gserviceaccount.com"
           echo "SERVICE_ACCOUNT=github-actions-sa@${prj_id}.iam.gserviceaccount.com" >> $GITHUB_OUTPUT
 
           workload_identity_id_suffix=${{ vars.GCP_WORKLOAD_IDENTITY_ID_SUFFIX }}
           pool=workloadIdentityPools/gha-pool-${workload_identity_id_suffix}
           provider=providers/gha-prov-${workload_identity_id_suffix}
+          echo "WORKLOAD_IDENTITY_PROVIDER=//iam.googleapis.com/projects/${{ vars.GCP_PROJECT_NO }}/locations/global/${pool}/${provider}"
           echo "WORKLOAD_IDENTITY_PROVIDER=//iam.googleapis.com/projects/${{ vars.GCP_PROJECT_NO }}/locations/global/${pool}/${provider}" >> $GITHUB_OUTPUT
 
           repo_domain=${{ env.region }}-docker.pkg.dev
+          echo "REPO_DOMAIN=${repo_domain}"
           echo "REPO_DOMAIN=${repo_domain}" >> $GITHUB_OUTPUT
+          echo "IMAGE=${repo_domain}/${prj_id}/${{ env.repo }}/${{ env.service }}:${{ github.sha }}"
           echo "IMAGE=${repo_domain}/${prj_id}/${{ env.repo }}/${{ env.service }}:${{ github.sha }}" >> $GITHUB_OUTPUT
 
       - id: "google-auth"
