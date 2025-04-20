@@ -1,6 +1,5 @@
 variable "project_id" {
-  type    = string
-  default = null
+  type = string
 }
 
 variable "region" {
@@ -11,6 +10,11 @@ variable "region" {
     condition     = var.region == "asia-northeast1"
     error_message = "The region must be asia-northeast1."
   }
+}
+
+variable "repository_id" {
+  type    = string
+  default = "hello-world-web-api"
 }
 
 variable "container_image" {
