@@ -59,7 +59,7 @@ jobs:
       - id: "build"
         name: "Build container"
         run: |-
-          docker build -t "${{ steps.set-vars.outputs.IMAGE }}" .
+          docker build -f app/Dockerfile -t "${{ steps.set-vars.outputs.IMAGE }}" .
 
       - id: "push"
         name: "Push container"
