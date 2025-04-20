@@ -14,5 +14,5 @@ variable "region" {
 
 variable "repository_id" {
   type    = string
-  default = "hello-world-web-api"
+  default = "my-test-repo"
 }

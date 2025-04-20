@@ -34,12 +34,6 @@ gcloud config set compute/zone asia-northeast1-a
 gsutil mb -l asia-northeast1 gs://tf-state-my-test-project-production-73177136639b
 ```
 
-## enable api
-
-```
-./enable-api.sh
-```
-
 ## operation
 
 ```

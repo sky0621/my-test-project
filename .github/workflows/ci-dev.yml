@@ -1,0 +1,10 @@
+name: "[dev] CI"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dev-deploy:
+    uses: ./.github/workflows/ci-shared.yml
+    with:
+      env: dev

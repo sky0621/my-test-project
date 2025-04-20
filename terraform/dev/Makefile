@@ -12,6 +12,12 @@ tf-validate:
 	$(TF) validate
 	@echo "Terraformのバリデーションが完了しました。"
 
+.PHONY: tf-lint
+tf-lint:
+	@echo "Terraformのリントを実行中..."
+	tflint
+	@echo "Terraformのリントが完了しました。"
+
 .PHONY: tf-plan
 tf-plan:
 	@echo "Terraformのプランを実行中..."
