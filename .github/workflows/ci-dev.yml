@@ -1,5 +1,9 @@
 name: "[dev] CI"
 
+permissions:
+  contents: read       # checkout や vars.GCP_* の読み取り用
+  id-token: write      # OIDC トークン発行のために必須
+
 on:
   workflow_dispatch:
 
