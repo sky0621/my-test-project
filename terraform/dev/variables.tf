@@ -12,6 +12,11 @@ variable "region" {
   }
 }
 
+variable "zone" {
+  type    = string
+  default = "asia-northeast1-a"
+}
+
 variable "repository_id" {
   type    = string
   default = "my-test-repo"

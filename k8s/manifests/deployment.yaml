@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-test-app-deployment
+  labels:
+    app: my-test-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-test-app
+  template:
+    metadata:
+      labels:
+        app: my-test-app
+    spec:
+      imagePullSecrets:
+        - name: ar-pull-secret
+      serviceAccountName: ar-puller
+      containers:
+        - name: my-test-app-container
+          image: asia-northeast1-docker.pkg.dev/YOUR_PROJECT_ID/my-test-repo/hello-world-web-api:c766d19967064819f06035d762772d474f92b8f2
+          ports:
+            - containerPort: 8080
