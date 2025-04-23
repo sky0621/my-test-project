@@ -1,0 +1,11 @@
+version: "2"
+sql:
+  - engine: "mysql"
+    queries: "./sql"
+    schema: "./migrations"
+    gen:
+      go:
+        package: "infra"
+        out: "./internal/infra"
+        emit_empty_slices: true
+        emit_interface: true

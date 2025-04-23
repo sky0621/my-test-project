@@ -34,3 +34,6 @@ go.work.sum
 *.tfvars.json
 *.tfplan
 
+# docker dir
+docker/
+

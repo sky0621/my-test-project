@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="my-test-project-server" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="my-test-project" />
+    <working_directory value="$PROJECT_DIR$/app" />
+    <envs>
+      <env name="DB_HOST" value="localhost" />
+      <env name="DB_PORT" value="15351" />
+      <env name="DB_USER" value="root" />
+      <env name="DB_PASSWORD" value="yuckyjuice" />
+      <env name="DB_NAME" value="mytestprojectmysql01" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="github.com/sky0621/my-test-project/app/cmd/server" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/app/cmd/migration/main.go" />
+    <method v="2" />
+  </configuration>
+</component>
