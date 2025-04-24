@@ -18,3 +18,7 @@ Dockerfile
 docker-compose.yml
 
 *_test.go
+
+migrations
+sql
+Makefile

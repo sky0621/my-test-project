@@ -1,42 +1,37 @@
 package config
 
-import "os"
+import (
+	"fmt"
+	"github.com/sky0621/my-test-project/app/internal/logger"
+	"os"
+)
 
-type DBConfig struct {
-	IsCloudSQL bool
-	ProjectID  string
-	Region     string
-	Instance   string
-	User       string
-	Password   string
-	DBName     string
-	Host       string
-	Port       string
+type Config struct {
+	DBUser      string
+	DBPass      string
+	DBName      string
+	DBHost      string // ローカル: "127.0.0.1"; 本番: インスタンス接続名 (PROJECT:REGION:INSTANCE)
+	DBPort      string // ローカル環境用
+	UseCloudSQL bool
 }
 
-func NewDBConfig() *DBConfig {
+func NewConfig(l logger.AppLogger) Config {
 	useCloudSQL := os.Getenv("USE_CLOUD_SQL") == "true"
-
-	if useCloudSQL {
-		return &DBConfig{
-			IsCloudSQL: true,
-			ProjectID:  os.Getenv("GCP_PROJECT_ID"),
-			Region:     os.Getenv("DB_REGION"),
-			Instance:   os.Getenv("DB_INSTANCE"),
-			User:       os.Getenv("DB_USER"),
-			Password:   os.Getenv("DB_PASSWORD"),
-			DBName:     os.Getenv("DB_NAME"),
-		}
-	} else {
-		return &DBConfig{
-			IsCloudSQL: false,
-			Host:       os.Getenv("DB_HOST"),
-			Port:       os.Getenv("DB_PORT"),
-			User:       os.Getenv("DB_USER"),
-			Password:   os.Getenv("DB_PASSWORD"),
-			DBName:     os.Getenv("DB_NAME"),
-		}
+	l.Log(fmt.Sprintf("useCloudSQL: %v", useCloudSQL))
+	cfg := Config{
+		DBUser:      os.Getenv("DB_USER"),
+		DBPass:      os.Getenv("DB_PASSWORD"),
+		DBName:      os.Getenv("DB_NAME"),
+		DBPort:      os.Getenv("DB_PORT"),
+		UseCloudSQL: useCloudSQL,
 	}
+	if useCloudSQL {
+		cfg.DBHost = fmt.Sprintf("%s:%s:%s", os.Getenv("GCP_PROJECT_ID"), os.Getenv("DB_REGION"), os.Getenv("DB_INSTANCE"))
+	} else {
+		cfg.DBHost = os.Getenv("DB_HOST")
+	}
+	l.Log(fmt.Sprintf("config: %v", cfg))
+	return cfg
 }
 
 func IsMigrateUp() bool {

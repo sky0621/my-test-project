@@ -8,6 +8,7 @@ import (
 	"github.com/sky0621/my-test-project/app/internal/config"
 	"github.com/sky0621/my-test-project/app/internal/db"
 	"github.com/sky0621/my-test-project/app/internal/infra"
+	"github.com/sky0621/my-test-project/app/internal/logger"
 	"log"
 	"net/http"
 	"strconv"
@@ -15,8 +16,9 @@ import (
 
 func main() {
 	ctx := context.Background()
-	cfg := config.NewDBConfig()
-	sqlDB, err := db.NewDBConnection(ctx, cfg)
+	l := logger.NewAppLogger()
+	cfg := config.NewConfig(l)
+	sqlDB, err := db.NewDB(ctx, cfg, l)
 	if err != nil {
 		log.Fatal(err)
 	}
