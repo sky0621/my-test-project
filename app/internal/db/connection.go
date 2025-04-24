@@ -2,30 +2,26 @@ package db
 
 import (
 	"cloud.google.com/go/cloudsqlconn"
+	cloudsqlmysql "cloud.google.com/go/cloudsqlconn/mysql/mysql"
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/go-sql-driver/mysql"
 	"github.com/sky0621/my-test-project/app/internal/config"
 	"github.com/sky0621/my-test-project/app/internal/logger"
-	"net"
 )
 
 func NewDB(ctx context.Context, cfg config.Config, l logger.AppLogger) (*sql.DB, error) {
 	network, addr := "tcp", fmt.Sprintf("%s:%s", cfg.DBHost, cfg.DBPort)
 
 	if cfg.UseCloudSQL {
-		dialer, err := cloudsqlconn.NewDialer(ctx)
+		cleanup, err := cloudsqlmysql.RegisterDriver(
+			"cloudsql-mysql",
+			cloudsqlconn.WithIAMAuthN(),
+		)
 		if err != nil {
-			werr := fmt.Errorf("dialer 作成失敗: %w", err)
-			l.Log(werr.Error())
-			return nil, werr
+			return nil, fmt.Errorf("RegisterDriver: %w", err)
 		}
-		network = "cloudsql-mysql"
-		addr = cfg.DBHost
-		mysql.RegisterDialContext(network, func(ctx context.Context, addr string) (net.Conn, error) {
-			return dialer.Dial(ctx, addr)
-		})
+		defer func() { _ = cleanup() }()
 	}
 
 	dsn := fmt.Sprintf(
