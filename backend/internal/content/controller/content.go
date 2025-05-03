@@ -43,7 +43,17 @@ func (c Content) PostContents(ctx context.Context, request api.PostContentsReque
 	return api.PostContents201JSONResponse(api.ContentResponse{
 		ContentID: newContentID.String(),
 		Name:      name,
-		// TODO: programs
+		Programs: func() []api.ProgramResponse {
+			ret := make([]api.ProgramResponse, len(programs))
+			for i, program := range programs {
+				ret[i] = api.ProgramResponse{
+					ProgramID: program.ID.String(),
+					Question:  &program.Question,
+					Answer:    &program.Answer,
+				}
+			}
+			return ret
+		}(),
 	}), nil
 }
 
