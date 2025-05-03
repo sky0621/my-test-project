@@ -34,6 +34,9 @@ go.work.sum
 *.tfvars.json
 *.tfplan
 
-# docker dir
-docker/
+# bin
+**/bin/**
 
+# docker dir
+**/.docker/mysql/data/
+**/.docker/mysql_test/data/

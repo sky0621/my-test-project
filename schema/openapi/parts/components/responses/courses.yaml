@@ -1,0 +1,13 @@
+CourseResponse:
+  type: object
+  properties:
+    id:
+      $ref: "../schemas/courses.yaml#/CourseId"
+    name:
+      $ref: "../schemas/courses.yaml#/CourseName"
+    level:
+      $ref: "../schemas/courses.yaml#/CourseLevel"
+  required:
+    - id
+    - name
+    - level

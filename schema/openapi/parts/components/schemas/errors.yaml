@@ -1,0 +1,4 @@
+ErrorMessage:
+  type: string
+  description: "エラーメッセージ"
+  example: "Unexpected error occurred"

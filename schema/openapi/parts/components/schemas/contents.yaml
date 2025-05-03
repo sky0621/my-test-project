@@ -1,0 +1,10 @@
+ContentId:
+  type: string
+  description: "コンテンツを一意に識別するID（フォーマットはUUID v7）"
+  example: "01964882-c142-7128-b08e-0faeeb8e598b"
+  x-go-name: ContentID
+
+ContentName:
+  type: string
+  description: "コンテンツ名"
+  example: "コンテンツの名前"

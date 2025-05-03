@@ -2,26 +2,47 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/sky0621/my-test-project/app/internal/config"
-	"github.com/sky0621/my-test-project/app/internal/db"
-	"log"
+	"github.com/sky0621/my-test-project/app/internal/shared/config"
+	"github.com/sky0621/my-test-project/app/internal/shared/rdb"
 )
 
 func main() {
+	var up, down, test bool
+	flag.BoolVar(&up, "up", false, "全マイグレーション適用")
+	flag.BoolVar(&down, "down", false, "全マイグレーションロールバック")
+	flag.BoolVar(&test, "test", false, "テスト用DBか否か")
+	flag.Parse()
+
 	ctx := context.Background()
-	cfg := config.NewDBConfig()
-	sqlDB, err := db.NewDBConnection(ctx, cfg)
-	if err != nil {
-		log.Fatal(err)
+	var cfg config.Config
+	if test {
+		cfg = config.NewTestConfig()
+	} else {
+		cfg = config.NewConfig()
 	}
-	driver, _ := mysql.WithInstance(sqlDB, &mysql.Config{})
+	sqlDB, err := rdb.NewDB(ctx, cfg)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	driver, err := mysql.WithInstance(sqlDB, &mysql.Config{})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if driver == nil {
+		fmt.Println("driver is nil")
+		return
+	}
 	m, _ := migrate.NewWithDatabaseInstance(
-		"file://migrations",
+		"file://schema/db",
 		"mysql",
 		driver,
 	)
@@ -30,19 +51,21 @@ func main() {
 		fmt.Println("no migration")
 		return
 	}
-	if config.IsMigrateUp() {
+	if up {
 		if err := m.Up(); err != nil {
 			fmt.Println(err)
 			return
 		}
+		fmt.Println("migration up success")
 		return
 	}
-	if config.IsMigrateDown() {
+	if down {
 		if err := m.Down(); err != nil {
 			fmt.Println(err)
 			return
 		}
+		fmt.Println("migration down success")
 		return
 	}
-	fmt.Println("no operation")
+	fmt.Println("no order")
 }

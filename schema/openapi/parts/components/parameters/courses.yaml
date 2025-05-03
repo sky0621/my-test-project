@@ -1,0 +1,7 @@
+CourseLevelQuery:
+  name: "courseLevel"
+  description: "コースレベル一致検索用文字列"
+  in: "query"
+  required: false
+  schema:
+    $ref: "../schemas/courses.yaml#/CourseLevel"

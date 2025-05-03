@@ -1,0 +1,11 @@
+ProgramResponse:
+  type: object
+  properties:
+    id:
+      $ref: "../schemas/programs.yaml#/ProgramId"
+    question:
+      $ref: "../schemas/programs.yaml#/ProgramQuestion"
+    answer:
+      $ref: "../schemas/programs.yaml#/ProgramAnswer"
+  required:
+    - id

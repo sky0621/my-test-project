@@ -1,0 +1,19 @@
+CourseId:
+  type: string
+  description: "コースを一意に識別するID（フォーマットはUUID v7）"
+  example: "01964882-c142-7128-b08e-0faeeb8e598b"
+  x-go-name: CourseID
+
+CourseName:
+  type: string
+  description: "コース名"
+  example: "コースの名前"
+
+CourseLevel:
+  type: string
+  description: "コースレベル"
+  example: "コースのレベル（low:低、middle:中、high:高）"
+  enum:
+    - low
+    - middle
+    - high

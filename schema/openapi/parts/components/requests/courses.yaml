@@ -1,0 +1,10 @@
+CourseRequest:
+  type: object
+  properties:
+    name:
+      $ref: "../schemas/courses.yaml#/CourseName"
+    level:
+      $ref: "../schemas/courses.yaml#/CourseLevel"
+  required:
+    - name
+    - level

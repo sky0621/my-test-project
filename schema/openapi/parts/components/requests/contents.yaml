@@ -1,0 +1,12 @@
+ContentRequest:
+  type: object
+  properties:
+    name:
+      $ref: "../schemas/contents.yaml#/ContentName"
+    programs:
+      type: array
+      items:
+        $ref: "./programs.yaml#/ProgramRequest"
+  required:
+    - name
+    - programs

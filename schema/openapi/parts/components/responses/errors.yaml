@@ -1,0 +1,11 @@
+400-BadRequest:
+  type: object
+  properties:
+    message:
+      $ref: "../schemas/errors.yaml#/ErrorMessage"
+
+404-NotFound:
+  type: object
+  properties:
+    message:
+      $ref: "../schemas/errors.yaml#/ErrorMessage"
