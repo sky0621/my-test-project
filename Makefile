@@ -19,7 +19,7 @@ redoc: redoc-lint
 
 .PHONY: generate-api
 generate-api: redoc
-	go tool oapi-codegen --config=oapi-codegen-config.yaml -o app/internal/api/generated.go $(OPENAPI_SCHEMA_YAML)
+	go tool oapi-codegen --config=oapi-codegen-config.yaml -o backend/internal/api/generated.go $(OPENAPI_SCHEMA_YAML)
 
 # ###########################################################
 # SQLC
@@ -52,30 +52,30 @@ stop-local-mysql-test:
 # ###########################################################
 .PHONY: migrate-up
 migrate-up:
-	go run app/cmd/migration/main.go --up
+	go run backend/cmd/migration/main.go --up
 
 .PHONY: migrate-down
 migrate-down:
-	go run app/cmd/migration/main.go --down
+	go run backend/cmd/migration/main.go --down
 
 .PHONY: test-migrate-up
 test-migrate-up:
-	go run app/cmd/migration/main.go --up --test
+	go run backend/cmd/migration/main.go --up --test
 
 .PHONY: test-migrate-down
 test-migrate-down:
-	go run app/cmd/migration/main.go --down --test
+	go run backend/cmd/migration/main.go --down --test
 
 # ###########################################################
 # Test
 # ###########################################################
 .PHONY: test
 test:
-	go test ./app/internal/...
+	go test ./backend/internal/...
 
 .PHONY: test-short
 test-short:
-	go test ./app/internal/... -short
+	go test ./backend/internal/... -short
 
 # ###########################################################
 # Build & Run Server
@@ -83,7 +83,7 @@ test-short:
 .PHONY: build
 build:
 	mkdir -p bin
-	go build -o bin/server ./app/cmd
+	go build -o bin/server ./backend/cmd/server
 
 .PHONY: run
 run: build
