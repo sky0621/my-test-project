@@ -1,0 +1,57 @@
+courses:
+  get:
+    summary: "コース一覧取得"
+    operationId: getCourses
+    parameters:
+      - $ref: "../components/parameters/courses.yaml#/CourseLevelQuery"
+    responses:
+      "200":
+        description: "OK: コース一覧を返却する。"
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/responses/courses.yaml#/CourseResponse"
+      "400":
+        description: "Bad Request: 無効なパラメータが指定された場合"
+        content:
+          application/json:
+            schema:
+              $ref: "../../shared-components/responses/error.yaml#/400-BadRequest"
+      '500':
+        description: サーバーエラー
+        content:
+          application/json:
+            schema:
+              $ref: "../../shared-components/responses/error.yaml#/500-InternalServerError"
+
+  post:
+    summary: "コース新規登録"
+    operationId: postCourses
+    requestBody:
+      description: "コース新規登録リクエスト"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../components/requests/courses.yaml#/CourseRequest"
+    responses:
+      "201":
+        description: "Created: コースを新規登録した場合"
+        content:
+          application/json:
+            schema:
+              $ref: "../components/responses/courses.yaml#/CourseResponse"
+      "400":
+        description: "Bad Request: 無効なパラメータが指定された場合"
+        content:
+          application/json:
+            schema:
+              $ref: "../../shared-components/responses/error.yaml#/400-BadRequest"
+      '500':
+        description: サーバーエラー
+        content:
+          application/json:
+            schema:
+              $ref: "../../shared-components/responses/error.yaml#/500-InternalServerError"

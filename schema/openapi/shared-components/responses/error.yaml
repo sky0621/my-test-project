@@ -1,0 +1,24 @@
+500-InternalServerError:
+  type: object
+  required:
+    - inquiryId
+    - message
+  properties:
+    inquiryId:
+      $ref: "../schemas/error.yaml#/ErrorInquiryId"
+    message:
+      $ref: "../schemas/error.yaml#/ErrorMessage"
+
+400-BadRequest:
+  type: object
+  required:
+    - message
+  properties:
+    message:
+      $ref: "../schemas/error.yaml#/ErrorMessage"
+
+404-NotFound:
+  type: object
+  properties:
+    message:
+      $ref: "../schemas/error.yaml#/ErrorMessage"

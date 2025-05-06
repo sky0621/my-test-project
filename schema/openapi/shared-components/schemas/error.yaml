@@ -1,0 +1,10 @@
+ErrorInquiryId:
+  type: string
+  description: "問い合わせ用ID"
+  example: "12345678"
+  x-go-name: InquiryID
+
+ErrorMessage:
+  type: string
+  description: "エラーメッセージ"
+  example: "Unexpected error occurred"

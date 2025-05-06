@@ -1,0 +1,10 @@
+ProgramRequest:
+  type: object
+  properties:
+    question:
+      $ref: "../schemas/programs.yaml#/ProgramQuestion"
+    answer:
+      $ref: "../schemas/programs.yaml#/ProgramAnswer"
+  required:
+    - question
+    - answer

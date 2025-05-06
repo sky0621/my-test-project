@@ -1,0 +1,16 @@
+ContentPartialNameQuery:
+  name: "partialName"
+  description: "コンテンツ名の部分一致検索用文字列"
+  in: "query"
+  required: false
+  schema:
+    $ref: "../schemas/contents.yaml#/ContentName"
+
+ContentIDPath:
+  name: "id"
+  description: "コンテンツID文字列"
+  in: "path"
+  required: true
+  x-go-name: ContentID
+  schema:
+    $ref: "../schemas/contents.yaml#/ContentId"
