@@ -10,6 +10,12 @@ OPENAPI_MANAGER_SCHEMA_YAML := $(OPENAPI_SCHEMA_DIR)/manager-api.yaml
 OPENAPI_PLAYER_DIR := $(OPENAPI_SCHEMA_DIR)/player
 OPENAPI_PLAYER_ROOT_YAML := $(OPENAPI_PLAYER_DIR)/root.yaml
 OPENAPI_PLAYER_SCHEMA_YAML := $(OPENAPI_SCHEMA_DIR)/player-api.yaml
+# for test
+TEST_DB_HOST := 127.0.0.1
+TEST_DB_PORT := 54306
+TEST_DB_NAME := my_test_project_test_db
+TEST_DB_USER := test_user
+TEST_DB_PASSWORD := yuckyjuice
 
 # ###########################################################
 # Open API
@@ -70,15 +76,24 @@ stop-local-mysql:
 
 .PHONY: run-local-mysql-test
 run-local-mysql-test:
+	TEST_DB_PORT=$(TEST_DB_PORT) \
+	TEST_DB_NAME=$(TEST_DB_NAME) \
+	TEST_DB_USER=$(TEST_DB_USER) \
+	TEST_DB_PASSWORD=$(TEST_DB_PASSWORD) \
 	docker compose up mysql_test -d --wait
 
 .PHONY: stop-local-mysql-test
 stop-local-mysql-test:
+	TEST_DB_PORT=$(TEST_DB_PORT) \
+	TEST_DB_NAME=$(TEST_DB_NAME) \
+	TEST_DB_USER=$(TEST_DB_USER) \
+	TEST_DB_PASSWORD=$(TEST_DB_PASSWORD) \
 	docker compose down mysql_test
 
 # ###########################################################
 # DB Migration
 # ###########################################################
+# for product
 .PHONY: migrate-up
 migrate-up:
 	go run backend/cmd/tool/migration/main.go --up
@@ -87,6 +102,7 @@ migrate-up:
 migrate-down:
 	go run backend/cmd/tool/migration/main.go --down
 
+# for test
 .PHONY: test-migrate-up
 test-migrate-up:
 	go run backend/cmd/tool/migration/main.go --up --test
@@ -99,12 +115,52 @@ test-migrate-down:
 # Test
 # ###########################################################
 .PHONY: test
-test:
-	go test ./backend/internal/...
+test: test-manager test-player test-shared
 
 .PHONY: test-short
-test-short:
-	go test ./backend/internal/... -short
+test: test-manager-short test-player-short test-shared-short
+
+# for manager
+.PHONY: test-manager
+test-manager:
+	TEST_DB_HOST=$(TEST_DB_HOST) \
+	TEST_DB_PORT=$(TEST_DB_PORT) \
+	TEST_DB_NAME=$(TEST_DB_NAME) \
+	TEST_DB_USER=$(TEST_DB_USER) \
+	TEST_DB_PASSWORD=$(TEST_DB_PASSWORD) \
+	go test ./backend/manager/...
+
+.PHONY: test-manager-short
+test-manager-short:
+	go test ./backend/manager/... -short
+
+# for player
+.PHONY: test-player
+test-player:
+	TEST_DB_HOST=$(TEST_DB_HOST) \
+	TEST_DB_PORT=$(TEST_DB_PORT) \
+	TEST_DB_NAME=$(TEST_DB_NAME) \
+	TEST_DB_USER=$(TEST_DB_USER) \
+	TEST_DB_PASSWORD=$(TEST_DB_PASSWORD) \
+	go test ./backend/player/...
+
+.PHONY: test-player-short
+test-player-short:
+	go test ./backend/player/... -short
+
+# for shared
+.PHONY: test-shared
+test-shared:
+	TEST_DB_HOST=$(TEST_DB_HOST) \
+	TEST_DB_PORT=$(TEST_DB_PORT) \
+	TEST_DB_NAME=$(TEST_DB_NAME) \
+	TEST_DB_USER=$(TEST_DB_USER) \
+	TEST_DB_PASSWORD=$(TEST_DB_PASSWORD) \
+	go test ./backend/shared/...
+
+.PHONY: test-shared-short
+test-shared-short:
+	go test ./backend/shared/... -short
 
 # ###########################################################
 # Build & Run Server

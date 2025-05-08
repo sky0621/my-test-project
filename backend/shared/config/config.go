@@ -17,9 +17,7 @@ type Config struct {
 }
 
 func NewConfig() Config {
-	if err := godotenv.Load(); err != nil {
-		log.Println("Warning: .env ファイルが見つかりませんでした")
-	}
+	_ = godotenv.Load()
 	useCloudSQL := os.Getenv("USE_CLOUD_SQL") == "true"
 	cfg := Config{
 		DBPort:      os.Getenv("DB_PORT"),

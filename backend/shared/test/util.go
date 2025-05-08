@@ -3,8 +3,6 @@ package test
 import (
 	"database/sql"
 	"fmt"
-	"github.com/joho/godotenv"
-	"log"
 	"os"
 	"testing"
 )
@@ -12,19 +10,11 @@ import (
 func ConnectTestDB(t *testing.T) *sql.DB {
 	t.Helper()
 
-	wd, _ := os.Getwd()
-	t.Logf("テストのワーキングディレクトリ: %s", wd)
-
-	if err := godotenv.Load("../../../../../.env"); err != nil {
-		log.Println("Warning: .env ファイルが見つかりませんでした")
-	}
-
-	// Get test database connection parameters from environment variables
-	dbUser := getEnv("TEST_DB_USER", "test_user")
-	dbPass := getEnv("TEST_DB_PASSWORD", "test_password")
-	dbName := getEnv("TEST_DB_NAME", "test_db")
-	dbHost := getEnv("TEST_DB_HOST", "localhost")
-	dbPort := getEnv("TEST_DB_PORT", "3307")
+	dbHost := os.Getenv("TEST_DB_HOST")
+	dbPort := os.Getenv("TEST_DB_PORT")
+	dbName := os.Getenv("TEST_DB_NAME")
+	dbUser := os.Getenv("TEST_DB_USER")
+	dbPass := os.Getenv("TEST_DB_PASSWORD")
 
 	// Create DSN for MySQL connection
 	dsn := fmt.Sprintf(
