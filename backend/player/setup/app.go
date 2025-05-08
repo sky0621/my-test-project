@@ -7,12 +7,13 @@ import (
 	oapimiddleware "github.com/oapi-codegen/echo-middleware"
 	"github.com/sky0621/my-test-project/backend/player/internal/api"
 	"github.com/sky0621/my-test-project/backend/shared/config"
+	"github.com/sky0621/my-test-project/backend/shared/rdb"
 	"log"
 )
 
 func NewApp() App {
 	ctx := context.Background()
-	db, err := newDB(ctx, config.NewConfig())
+	db, err := rdb.NewDB(ctx, config.NewConfig())
 	if err != nil {
 		return nil
 	}

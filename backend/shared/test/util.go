@@ -12,7 +12,10 @@ import (
 func ConnectTestDB(t *testing.T) *sql.DB {
 	t.Helper()
 
-	if err := godotenv.Load("../../../../.env"); err != nil {
+	wd, _ := os.Getwd()
+	t.Logf("テストのワーキングディレクトリ: %s", wd)
+
+	if err := godotenv.Load("../../../../../.env"); err != nil {
 		log.Println("Warning: .env ファイルが見つかりませんでした")
 	}
 

@@ -14,6 +14,9 @@ OPENAPI_PLAYER_SCHEMA_YAML := $(OPENAPI_SCHEMA_DIR)/player-api.yaml
 # ###########################################################
 # Open API
 # ###########################################################
+.PHONY: generate-api
+generate-api: generate-manager-api generate-player-api
+
 # for manager
 .PHONY: redoc-manager-lint
 redoc-manager-lint:
