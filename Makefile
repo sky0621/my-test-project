@@ -81,19 +81,19 @@ stop-local-mysql-test:
 # ###########################################################
 .PHONY: migrate-up
 migrate-up:
-	go run backend/cmd/migration/main.go --up
+	go run backend/cmd/tool/migration/main.go --up
 
 .PHONY: migrate-down
 migrate-down:
-	go run backend/cmd/migration/main.go --down
+	go run backend/cmd/tool/migration/main.go --down
 
 .PHONY: test-migrate-up
 test-migrate-up:
-	go run backend/cmd/migration/main.go --up --test
+	go run backend/cmd/tool/migration/main.go --up --test
 
 .PHONY: test-migrate-down
 test-migrate-down:
-	go run backend/cmd/migration/main.go --down --test
+	go run backend/cmd/tool/migration/main.go --down --test
 
 # ###########################################################
 # Test

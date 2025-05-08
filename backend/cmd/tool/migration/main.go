@@ -8,8 +8,8 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/sky0621/my-test-project/backend/internal/shared/config"
-	"github.com/sky0621/my-test-project/backend/internal/shared/rdb"
+	"github.com/sky0621/my-test-project/backend/shared/config"
+	"github.com/sky0621/my-test-project/backend/shared/rdb"
 )
 
 func main() {
