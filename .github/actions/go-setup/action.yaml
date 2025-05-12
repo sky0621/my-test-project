@@ -1,0 +1,17 @@
+name: go setup
+description: go test execute
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Go
+      id: setup-go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: "go.mod"
+        cache-dependency-path: "go.sum"
+    - name: Get Go dependencies
+      if: ${{ steps.setup-go.outputs.cache-hit != 'true' }}
+      shell: bash
+      run: |
+        go mod tidy

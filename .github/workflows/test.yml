@@ -3,61 +3,30 @@ name: "Test"
 on:
   workflow_call:
 
-env:
-  region: asia-northeast1
-  repo: my-test-repo
-  service: hello-world-web-api
-
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.env }}
     steps:
       - id: "checkout"
         name: "Checkout"
-        uses: "actions/checkout@v3"
-
-      - id: "set-vars"
-        name: "Set variables"
+        uses: "actions/checkout@v4"
+        with:
+          persist-credentials: false
+      - id: "setup-go"
+        name: "Go setup"
+        uses: "./.github/actions/go-setup"
+      - id: "start-mysql"
+        name: "Start MySQL"
+        shell: bash
         run: |
-          prj_id=${{ vars.GCP_PROJECT_ID }}
-          echo "PROJECT_ID=${prj_id}" >> $GITHUB_OUTPUT
-          echo "SERVICE_ACCOUNT=github-actions-sa@${prj_id}.iam.gserviceaccount.com" >> $GITHUB_OUTPUT
-
-          workload_identity_id_suffix=${{ vars.GCP_WORKLOAD_IDENTITY_ID_SUFFIX }}
-          pool=workloadIdentityPools/gha-pool-${workload_identity_id_suffix}
-          provider=providers/gha-prov-${workload_identity_id_suffix}
-          echo "WORKLOAD_IDENTITY_PROVIDER=projects/${{ vars.GCP_PROJECT_NO }}/locations/global/${pool}/${provider}" >> $GITHUB_OUTPUT
-
-          repo_domain=${{ env.region }}-docker.pkg.dev
-          echo "REPO_DOMAIN=${repo_domain}" >> $GITHUB_OUTPUT
-          echo "IMAGE=${repo_domain}/${prj_id}/${{ env.repo }}/${{ env.service }}:${{ github.sha }}" >> $GITHUB_OUTPUT
-
-      - id: "google-auth"
-        name: "Google auth"
-        uses: "google-github-actions/auth@v1"
-        with:
-          workload_identity_provider: "${{ steps.set-vars.outputs.WORKLOAD_IDENTITY_PROVIDER }}"
-          service_account: "${{ steps.set-vars.outputs.SERVICE_ACCOUNT }}"
-          audience: "//iam.googleapis.com/${{ steps.set-vars.outputs.WORKLOAD_IDENTITY_PROVIDER }}"
-
-      - id: "gcloud-setup"
-        name: "Set up Cloud SDK"
-        uses: "google-github-actions/setup-gcloud@v1"
-        with:
-          project_id: "${{ steps.set-vars.outputs.PROJECT_ID }}"
-
-      - id: "docker-auth"
-        name: "Docker auth"
-        run: |-
-          gcloud auth configure-docker ${{ steps.set-vars.outputs.REPO_DOMAIN }}
-
-      - id: "build"
-        name: "Build container"
-        run: |-
-          docker build -f app/Dockerfile -t "${{ steps.set-vars.outputs.IMAGE }}" ./app
-
-      - id: "push"
-        name: "Push container"
-        run: |-
-          docker push "${{ steps.set-vars.outputs.IMAGE }}"
+          make run-local-mysql-test
+      - id: "migrate-db"
+        name: "Migrate DB"
+        shell: bash
+        run: |
+          make test-migrate-up
+      - id: "run-tests"
+        name: "Run tests"
+        shell: bash
+        run: |
+          make test
