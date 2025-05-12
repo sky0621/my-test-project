@@ -3,12 +3,15 @@ package test
 import (
 	"database/sql"
 	"fmt"
+	"github.com/joho/godotenv"
 	"os"
 	"testing"
 )
 
 func ConnectTestDB(t *testing.T) *sql.DB {
 	t.Helper()
+
+	_ = godotenv.Load(fmt.Sprintf("%s/.env", os.Getenv("MY_TEST_PROJECT_ROOT")))
 
 	dbHost := os.Getenv("TEST_DB_HOST")
 	dbPort := os.Getenv("TEST_DB_PORT")
