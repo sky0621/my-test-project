@@ -24,6 +24,11 @@ jobs:
         shell: bash
         run: |
           make run-local-mysql-test
+      - id: "copy-dotenv"
+        name: "Copy .env"
+        shell: bash
+        run: |
+          cp .env.local .env
       - id: "migrate-db"
         name: "Migrate DB"
         shell: bash
