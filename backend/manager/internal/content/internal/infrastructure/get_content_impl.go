@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"github.com/sky0621/my-test-project/backend/manager/internal/content/application/query"
-	"github.com/sky0621/my-test-project/backend/manager/internal/content/infrastructure/rdb"
+	"github.com/sky0621/my-test-project/backend/manager/internal/content/internal/application/query"
+	"github.com/sky0621/my-test-project/backend/manager/internal/content/internal/infrastructure/rdb"
 	"github.com/sky0621/my-test-project/backend/shared/service"
 )
 

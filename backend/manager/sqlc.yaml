@@ -2,12 +2,12 @@ version: "2"
 sql:
   - engine: "mysql"
     name: "content"
-    queries: "./internal/content/infrastructure/rdb/sql/**"
+    queries: "./internal/content/internal/infrastructure/rdb/sql/**"
     schema: "../../schema/db"
     gen:
       go:
         package: "rdb"
-        out: "./internal/content/infrastructure/rdb"
+        out: "./internal/content/internal/infrastructure/rdb"
         overrides:
           - column: "contents.id"
             go_type:

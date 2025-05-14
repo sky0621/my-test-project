@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"github.com/sky0621/my-test-project/backend/manager/internal/content/domain/model"
+	"github.com/sky0621/my-test-project/backend/manager/internal/content/internal/domain/model"
 )
 
 type Content interface {
