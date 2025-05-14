@@ -2,7 +2,7 @@ package model
 
 import (
 	"errors"
-	"github.com/sky0621/my-test-project/backend/player/internal/content/domain/model/entity"
+	"github.com/sky0621/my-test-project/backend/player/internal/content/internal/domain/model/entity"
 	"github.com/sky0621/my-test-project/backend/shared/model"
 )
 

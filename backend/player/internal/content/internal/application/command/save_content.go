@@ -2,8 +2,8 @@ package command
 
 import (
 	"context"
-	"github.com/sky0621/my-test-project/backend/player/internal/content/domain/model"
-	"github.com/sky0621/my-test-project/backend/player/internal/content/domain/repository"
+	"github.com/sky0621/my-test-project/backend/player/internal/content/internal/domain/model"
+	"github.com/sky0621/my-test-project/backend/player/internal/content/internal/domain/repository"
 )
 
 func NewSaveContent(r repository.Content) SaveContent {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
-	"github.com/sky0621/my-test-project/backend/player/internal/content/application/query"
+	"github.com/sky0621/my-test-project/backend/player/internal/content/internal/application/query"
 	"github.com/sky0621/my-test-project/backend/shared/test"
 	"github.com/stretchr/testify/assert"
 	"testing"

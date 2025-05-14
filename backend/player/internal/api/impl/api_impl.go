@@ -3,13 +3,13 @@ package apiimpl
 import (
 	"context"
 	"github.com/sky0621/my-test-project/backend/player/internal/api"
-	contentsController "github.com/sky0621/my-test-project/backend/player/internal/content/controller"
+	contentport "github.com/sky0621/my-test-project/backend/player/internal/content/port"
 )
 
 var _ api.StrictServerInterface = (*strictServerImpl)(nil)
 
 func New(
-	contentsController contentsController.Content,
+	contentsController contentport.ContentController,
 	middlewares []api.StrictMiddlewareFunc,
 ) api.ServerInterface {
 	return api.NewStrictHandler(&strictServerImpl{
@@ -18,7 +18,7 @@ func New(
 }
 
 type strictServerImpl struct {
-	contentsController contentsController.Content
+	contentsController contentport.ContentController
 }
 
 func (s strictServerImpl) GetContents(ctx context.Context, request api.GetContentsRequestObject) (api.GetContentsResponseObject, error) {

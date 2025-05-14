@@ -3,24 +3,27 @@ package controller
 import (
 	"context"
 	"github.com/sky0621/my-test-project/backend/player/internal/api"
-	"github.com/sky0621/my-test-project/backend/player/internal/content/application/command"
-	"github.com/sky0621/my-test-project/backend/player/internal/content/application/query"
-	"github.com/sky0621/my-test-project/backend/player/internal/content/domain/model"
+	"github.com/sky0621/my-test-project/backend/player/internal/content/internal/application/command"
+	"github.com/sky0621/my-test-project/backend/player/internal/content/internal/application/query"
+	"github.com/sky0621/my-test-project/backend/player/internal/content/internal/domain/model"
+	"github.com/sky0621/my-test-project/backend/player/internal/content/port"
 	"github.com/sky0621/my-test-project/backend/shared/converter"
 	"github.com/sky0621/my-test-project/backend/shared/service"
 )
 
-func NewContent(searchContents query.SearchContents, getContent query.GetContent, saveContent command.SaveContent) Content {
-	return Content{searchContents: searchContents, getContent: getContent, saveContent: saveContent}
+var _ port.ContentController = (*impl)(nil)
+
+func New(searchContents query.SearchContents, getContent query.GetContent, saveContent command.SaveContent) port.ContentController {
+	return impl{searchContents: searchContents, getContent: getContent, saveContent: saveContent}
 }
 
-type Content struct {
+type impl struct {
 	searchContents query.SearchContents
 	getContent     query.GetContent
 	saveContent    command.SaveContent
 }
 
-func (c Content) PostContents(ctx context.Context, request api.PostContentsRequestObject) (api.PostContentsResponseObject, error) {
+func (c impl) PostContents(ctx context.Context, request api.PostContentsRequestObject) (api.PostContentsResponseObject, error) {
 	newContentID := service.MustCreateNewID()
 	name := request.Body.Name
 	programs := make([]model.ProgramWriteModel, len(request.Body.Programs))
@@ -57,7 +60,7 @@ func (c Content) PostContents(ctx context.Context, request api.PostContentsReque
 	}), nil
 }
 
-func (c Content) GetContents(ctx context.Context, _ api.GetContentsRequestObject) (api.GetContentsResponseObject, error) {
+func (c impl) GetContents(ctx context.Context, _ api.GetContentsRequestObject) (api.GetContentsResponseObject, error) {
 	contents, err := c.searchContents.Exec(ctx)
 	if err != nil {
 		return nil, err
@@ -83,7 +86,7 @@ func (c Content) GetContents(ctx context.Context, _ api.GetContentsRequestObject
 	return api.GetContents200JSONResponse(responses), nil
 }
 
-func (c Content) GetContentsByID(ctx context.Context, request api.GetContentsByIDRequestObject) (api.GetContentsByIDResponseObject, error) {
+func (c impl) GetContentsByID(ctx context.Context, request api.GetContentsByIDRequestObject) (api.GetContentsByIDResponseObject, error) {
 	_, err := service.ParseID(request.ID)
 	if err != nil {
 		return api.GetContentsByID400JSONResponse{Message: "not uuid"}, nil
