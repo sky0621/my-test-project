@@ -23,12 +23,12 @@ sql:
 
   - engine: "mysql"
     name: "course"
-    queries: "./internal/course/infrastructure/rdb/sql/**"
+    queries: "./internal/course/internal/infrastructure/rdb/sql/**"
     schema: "../../schema/db"
     gen:
       go:
         package: "rdb"
-        out: "./internal/course/infrastructure/rdb"
+        out: "./internal/course/internal/infrastructure/rdb"
         overrides:
           - column: "courses.id"
             go_type:

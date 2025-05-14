@@ -11,19 +11,19 @@ import (
 	"github.com/sky0621/my-test-project/backend/shared/service"
 )
 
-var _ port.ContentController = (*contentControllerImpl)(nil)
+var _ port.ContentController = (*impl)(nil)
 
-func NewContentController(searchContents query.SearchContents, getContent query.GetContent, saveContent command.SaveContent) port.ContentController {
-	return contentControllerImpl{searchContents: searchContents, getContent: getContent, saveContent: saveContent}
+func New(searchContents query.SearchContents, getContent query.GetContent, saveContent command.SaveContent) port.ContentController {
+	return impl{searchContents: searchContents, getContent: getContent, saveContent: saveContent}
 }
 
-type contentControllerImpl struct {
+type impl struct {
 	searchContents query.SearchContents
 	getContent     query.GetContent
 	saveContent    command.SaveContent
 }
 
-func (c contentControllerImpl) PostContents(ctx context.Context, request api.PostContentsRequestObject) (api.PostContentsResponseObject, error) {
+func (c impl) PostContents(ctx context.Context, request api.PostContentsRequestObject) (api.PostContentsResponseObject, error) {
 	newContentID := service.MustCreateNewID()
 	name := request.Body.Name
 	programs := make([]model.ProgramWriteModel, len(request.Body.Programs))
@@ -60,7 +60,7 @@ func (c contentControllerImpl) PostContents(ctx context.Context, request api.Pos
 	}), nil
 }
 
-func (c contentControllerImpl) GetContents(ctx context.Context, request api.GetContentsRequestObject) (api.GetContentsResponseObject, error) {
+func (c impl) GetContents(ctx context.Context, request api.GetContentsRequestObject) (api.GetContentsResponseObject, error) {
 	contents, err := c.searchContents.Exec(ctx, request.Params.PartialName)
 	if err != nil {
 		return nil, err
@@ -86,7 +86,7 @@ func (c contentControllerImpl) GetContents(ctx context.Context, request api.GetC
 	return api.GetContents200JSONResponse(responses), nil
 }
 
-func (c contentControllerImpl) GetContentsByID(ctx context.Context, request api.GetContentsByIDRequestObject) (api.GetContentsByIDResponseObject, error) {
+func (c impl) GetContentsByID(ctx context.Context, request api.GetContentsByIDRequestObject) (api.GetContentsByIDResponseObject, error) {
 	_, err := service.ParseID(request.ContentID)
 	if err != nil {
 		return api.GetContentsByID400JSONResponse{Message: "not uuid"}, nil

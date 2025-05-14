@@ -4,14 +4,14 @@ import (
 	"context"
 	"github.com/sky0621/my-test-project/backend/manager/internal/api"
 	contentport "github.com/sky0621/my-test-project/backend/manager/internal/content/port"
-	coursesController "github.com/sky0621/my-test-project/backend/manager/internal/course/controller"
+	courseport "github.com/sky0621/my-test-project/backend/manager/internal/course/port"
 )
 
 var _ api.StrictServerInterface = (*strictServerImpl)(nil)
 
 func New(
 	contentsController contentport.ContentController,
-	coursesController coursesController.Course,
+	coursesController courseport.CourseController,
 	middlewares []api.StrictMiddlewareFunc,
 ) api.ServerInterface {
 	return api.NewStrictHandler(&strictServerImpl{
@@ -22,7 +22,7 @@ func New(
 
 type strictServerImpl struct {
 	contentsController contentport.ContentController
-	coursesController  coursesController.Course
+	coursesController  courseport.CourseController
 }
 
 func (s strictServerImpl) GetContents(ctx context.Context, request api.GetContentsRequestObject) (api.GetContentsResponseObject, error) {

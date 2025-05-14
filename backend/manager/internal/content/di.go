@@ -9,7 +9,7 @@ import (
 )
 
 func NewController(db *sql.DB) port.ContentController {
-	return controller.NewContentController(
+	return controller.New(
 		infrastructure.NewSearchContents(db),
 		infrastructure.NewGetContent(db),
 		command.NewSaveContent(
